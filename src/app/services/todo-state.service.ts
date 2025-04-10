@@ -2,14 +2,16 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, finalize } from 'rxjs';
 import { TodoList } from '@/shared/models/todo.model';
+import { environment } from '@/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoStateService {
   private http = inject(HttpClient);
-  // Local storage key
-  private readonly STORAGE_KEY = 'todoAppState';
+  // Use environment variables
+  private readonly STORAGE_KEY = environment.storageKey;
+  private readonly API_BASE_URL = environment.apiUrl;
 
   // --- State Subjects ---
   private readonly _todoLists$ = new BehaviorSubject<TodoList[]>([]);
@@ -54,6 +56,7 @@ export class TodoStateService {
 
   private saveToLocalStorage(lists: TodoList[]): void {
     try {
+      // Use constant for storage key
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(lists));
     } catch (error) {
       console.error('Error saving state to local storage:', error);
@@ -74,7 +77,7 @@ export class TodoStateService {
     }
 
     this.http
-      .get<ApiListItem[]>('http://localhost:3000/todos')
+      .get<ApiListItem[]>(`${this.API_BASE_URL}/todos`)
       .pipe(
         finalize(() => {
           // Always set loading to false when the call finishes (success or error)
@@ -111,7 +114,7 @@ export class TodoStateService {
     this._isAddingList$.next(true);
     const payload = { title: listTitle };
     this.http
-      .post('http://localhost:3000/todos', payload, { observe: 'response' })
+      .post(`${this.API_BASE_URL}/todos`, payload, { observe: 'response' })
       .pipe(finalize(() => this._isAddingList$.next(false)))
       .subscribe({
         next: response => {
@@ -138,7 +141,7 @@ export class TodoStateService {
     };
 
     this.http
-      .post(`http://localhost:3000/todos/${listId}/items`, payload, { observe: 'response' })
+      .post(`${this.API_BASE_URL}/todos/${listId}/items`, payload, { observe: 'response' })
       .pipe(
         finalize(() => {
           const currentSet = this._isAddingItemToList$.getValue();
@@ -179,7 +182,7 @@ export class TodoStateService {
     const payload = { completed: newCompletedStatus };
 
     this.http
-      .patch(`http://localhost:3000/todos/${listId}/items/${itemId}`, payload, {
+      .patch(`${this.API_BASE_URL}/todos/${listId}/items/${itemId}`, payload, {
         observe: 'response',
       })
       .pipe(
