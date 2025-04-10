@@ -1,0 +1,67 @@
+<div *ngIf="list$ | async as list" class="mt-6 p-6 bg-white rounded-lg shadow">
+  <h3 class="text-2xl font-semibold mb-4 text-gray-700">Details for: {{ list.title }}</h3>
+
+  <!-- Input for adding new items to the selected list -->
+  <div class="mb-4 flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+    <input
+      type="text"
+      [(ngModel)]="newTodoItemTitle"
+      placeholder="Enter new todo title"
+      class="flex-grow border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      (keyup.enter)="addItem()"
+      [disabled]="(isAddingItemToList$ | async)?.has(list.id) ?? false"
+    />
+    <input
+      type="text"
+      [(ngModel)]="newTodoItemDescription"
+      placeholder="Enter description (optional)"
+      class="flex-grow border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      (keyup.enter)="addItem()"
+      [disabled]="(isAddingItemToList$ | async)?.has(list.id) ?? false"
+    />
+    <button
+      (click)="addItem()"
+      class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      [disabled]="(isAddingItemToList$ | async)?.has(list.id) ?? false"
+    >
+      <span *ngIf="!(isAddingItemToList$ | async)?.has(list.id)">Add Item</span>
+      <span *ngIf="(isAddingItemToList$ | async)?.has(list.id)">Adding...</span>
+    </button>
+  </div>
+
+  <!-- Display items in the selected list -->
+  <ul class="space-y-2">
+    <li
+      *ngFor="let item of list.items"
+      class="flex items-center justify-between p-3 bg-gray-50 rounded transition-opacity duration-150"
+      [class.opacity-50]="(isTogglingItem$ | async)?.has(item.id)"
+    >
+      <div>
+        <input
+          type="checkbox"
+          [checked]="item.completed"
+          (change)="toggleCompletion(item)"
+          class="mr-3 h-4 w-4 border border-gray-300 rounded focus:ring-blue-500 cursor-pointer appearance-none bg-white checked:bg-green-600 checked:border-transparent focus:ring-offset-0 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+          [ngClass]="{}"
+          [disabled]="(isTogglingItem$ | async)?.has(item.id) ?? false"
+        />
+        <span class="text-gray-800" [class.line-through]="item.completed">
+          <span class="font-semibold">{{ item.title }}</span>
+          <span class="block text-sm text-gray-600" *ngIf="item.description">{{
+            item.description
+          }}</span>
+        </span>
+      </div>
+      <span
+        class="text-xs px-2 py-1 rounded {{
+          item.completed ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800'
+        }}"
+      >
+        {{ item.completed ? 'Completed' : 'Pending' }}
+      </span>
+    </li>
+    <li *ngIf="list.items.length === 0" class="text-gray-500 italic p-3">
+      No items in this list yet.
+    </li>
+  </ul>
+</div>
