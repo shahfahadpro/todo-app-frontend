@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, finalize } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 import { TodoList } from '@/shared/models/todo.model';
 import { environment } from '@/environments/environment';
 
@@ -9,6 +10,7 @@ import { environment } from '@/environments/environment';
 })
 export class TodoStateService {
   private http = inject(HttpClient);
+  private toastr = inject(ToastrService);
   // Use environment variables
   private readonly STORAGE_KEY = environment.storageKey;
   private readonly API_BASE_URL = environment.apiUrl;
@@ -104,6 +106,7 @@ export class TodoStateService {
         },
         error: err => {
           console.error('Error loading initial lists from API:', err);
+          this.toastr.error('Failed to load lists.', 'Error:');
         },
       });
   }
@@ -127,7 +130,10 @@ export class TodoStateService {
             this.loadInitialLists(false);
           }
         },
-        error: err => console.error('Error adding list via API:', err),
+        error: err => {
+          console.error('Error adding list via API:', err);
+          this.toastr.error('Failed to add the new list.', 'Error:');
+        },
       });
   }
 
@@ -160,7 +166,10 @@ export class TodoStateService {
             this.loadInitialLists(false);
           }
         },
-        error: err => console.error(`Error adding item to list ${listId} via API:`, err),
+        error: err => {
+          console.error(`Error adding item to list ${listId} via API:`, err);
+          this.toastr.error('Failed to add the new item to the list.', 'Error:');
+        },
       });
   }
 
@@ -203,7 +212,10 @@ export class TodoStateService {
             this.loadInitialLists(false);
           }
         },
-        error: err => console.error(`Error updating item ${itemId} status via API:`, err),
+        error: err => {
+          console.error(`Error updating item ${itemId} status via API:`, err);
+          this.toastr.error('Failed to update item status.', 'Error:');
+        },
       });
   }
 }
