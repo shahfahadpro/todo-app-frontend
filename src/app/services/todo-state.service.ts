@@ -116,7 +116,6 @@ export class TodoStateService {
       .subscribe({
         next: response => {
           if (response.status === 201) {
-            console.log('[State Service] List added via REAL API, refreshing state...');
             this.loadInitialLists(false); // This will refresh state and save to local storage
           } else {
             console.warn(
@@ -125,7 +124,7 @@ export class TodoStateService {
             this.loadInitialLists(false);
           }
         },
-        error: err => console.error('Error adding list via REAL API:', err),
+        error: err => console.error('Error adding list via API:', err),
       });
   }
 
@@ -150,9 +149,6 @@ export class TodoStateService {
       .subscribe({
         next: response => {
           if (response.status === 201) {
-            console.log(
-              `[State Service] Item added to list ${listId} via REAL API, refreshing state...`
-            );
             this.loadInitialLists(false);
           } else {
             console.warn(
@@ -161,7 +157,7 @@ export class TodoStateService {
             this.loadInitialLists(false);
           }
         },
-        error: err => console.error(`Error adding item to list ${listId} via REAL API:`, err),
+        error: err => console.error(`Error adding item to list ${listId} via API:`, err),
       });
   }
 
@@ -196,9 +192,6 @@ export class TodoStateService {
       .subscribe({
         next: response => {
           if (response.status === 200) {
-            console.log(
-              `[State Service] Item ${itemId} status updated via REAL API, refreshing state...`
-            );
             this.loadInitialLists(false);
           } else {
             console.warn(
@@ -207,7 +200,7 @@ export class TodoStateService {
             this.loadInitialLists(false);
           }
         },
-        error: err => console.error(`Error updating item ${itemId} status via REAL API:`, err),
+        error: err => console.error(`Error updating item ${itemId} status via API:`, err),
       });
   }
 }
