@@ -1,4 +1,8 @@
-# Angular Todo Lists Application
+<p align="center">
+  <a href="https://angular.io/" target="_blank"><img src="https://angular.io/assets/images/logos/angular/angular.svg" width="150" alt="Angular Logo" /></a>
+</p>
+
+# Todo Lists App
 
 ## Description
 
