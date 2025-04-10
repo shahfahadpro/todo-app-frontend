@@ -119,7 +119,7 @@ export class TodoStateService {
             this.loadInitialLists(false); // This will refresh state and save to local storage
           } else {
             console.warn(
-              `[State Service] List added via REAL API but received status ${response.status}, refreshing state anyway...`
+              `List added via API but received status ${response.status}, refreshing state anyway...`
             );
             this.loadInitialLists(false);
           }
@@ -152,7 +152,7 @@ export class TodoStateService {
             this.loadInitialLists(false);
           } else {
             console.warn(
-              `[State Service] Item added via REAL API but received status ${response.status}, refreshing state anyway...`
+              `Item added via API but received status ${response.status}, refreshing state anyway...`
             );
             this.loadInitialLists(false);
           }
@@ -195,7 +195,7 @@ export class TodoStateService {
             this.loadInitialLists(false);
           } else {
             console.warn(
-              `[State Service] Item status updated via REAL API but received status ${response.status}, refreshing state anyway...`
+              `Item status updated via API but received status ${response.status}, refreshing state anyway...`
             );
             this.loadInitialLists(false);
           }
