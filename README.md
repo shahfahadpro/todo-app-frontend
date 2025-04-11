@@ -41,6 +41,7 @@ Built with Angular (v15+), TypeScript, and styled using Tailwind CSS.
   - **Important:** `localStorage` is browser-specific and user-specific. This persistence method is suitable for single-user scenarios on a consistent browser. It **does not** synchronize data across different users, browsers, or devices. Relying solely on `localStorage` in a multi-user environment would lead to data inconsistencies.
   - The current strategy of **re-fetching the entire list data from the API** after every successful create, update operation (add list, add item, toggle item) helps mitigate some potential frontend state inconsistencies. Instead of attempting complex client-side patching of the data array, this ensures the frontend always displays the latest state _according to the backend_ after a modification, which also updates the local storage cache correctly.
 - **Configuration:** API base URL and Local Storage key are managed via Angular's environment files (`src/environments/environment.ts` and `src/environments/environment.prod.ts`), allowing for different configurations per build environment.
+- **Unit Testing:** Basic unit tests are included for core components (`TodoListComponent`, `TodoDetailComponent`) using Jasmine and Angular's `TestBed` to verify fundamental functionality and service interactions.
 - **Code Quality:** Follows Angular and TypeScript best practices. Project configured with **ESLint** for linting and **Prettier** for code formatting to ensure consistency and maintainability.
 
 ## Getting Started
@@ -64,26 +65,3 @@ Built with Angular (v15+), TypeScript, and styled using Tailwind CSS.
     ```
 3.  **Configure Environment:**
     - Ensure the `apiUrl` in `src/environments/environment.ts` points to your local backend API instance (e.g., `http://localhost:3000`).
-    - Ensure the `apiUrl` in `src/environments/environment.prod.ts` points to your deployed production backend API URL.
-
-### Development Server
-
-Run `ng serve` or `npm start` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-### Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-Use `ng build --configuration production` (or `ng build --prod` for older versions) for a production build, which utilizes `environment.prod.ts`.
-
-## Deployment
-
-This project is configured for deployment (e.g., on Vercel). The following build command ensures the production environment configuration is used:
-
-```bash
-ng build --configuration production
-```
-
-Ensure your deployment service (like Vercel) uses this command in its build settings.
-
----
